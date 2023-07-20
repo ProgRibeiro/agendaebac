@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Agenda de contatos</h1>
+        <form id="form-agenda">
+            <input type="text" id="Nome" required placeholder="Nome">
+            <input type="tel" id="telefone" required placeholder="Telefone">
+            <button type="submit">Adicionar</button>
+        </form>
+
+        <div id="lista-contatos">
+            <!-- Lista de contatos será gerada dinamicamente aqui -->
+            <p>Nenhum contato adicionado ainda.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Array para armazenar os contatos
+            let contatos = [];
+
+            // Referência aos elementos do formulário e da lista de contatos
+            const formAgenda = document.getElementById('form-agenda');
+            const listaContatos = document.getElementById('lista-contatos');
+            const nomeInput = document.getElementById('Nome');
+            const telefoneInput = document.getElementById('telefone');
+
+            // Função para exibir a lista de contatos
+            function exibirContatos() {
+                listaContatos.innerHTML = '';
+
+                if (contatos.length === 0) {
+                    listaContatos.innerHTML = '<p>Nenhum contato adicionado ainda.</p>';
+                    return;
+                }
+
+                const ul = document.createElement('ul');
+
+                contatos.forEach(contato => {
+                    const li = document.createElement('li');
+                    li.textContent = `${contato.nome} - ${contato.telefone}`;
+                    ul.appendChild(li);
+                });
+
+                listaContatos.appendChild(ul);
+            }
+
+            // Função para adicionar um novo contato
+            function adicionarContato(nome, telefone) {
+                contatos.push({ nome, telefone });
+                exibirContatos();
+            }
+
+            // Event listener para o formulário de adicionar contato
+            formAgenda.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const nome = nomeInput.value.trim();
+                const telefone = telefoneInput.value.trim();
+
+                if (nome === '' || telefone === '') {
+                    alert('Por favor, preencha todos os campos.');
+                    return;
+                }
+
+                adicionarContato(nome, telefone);
+
+                // Limpa os campos do formulário após adicionar o contato
+                nomeInput.value = '';
+                telefoneInput.value = '';
+            });
+        });
+    </script>
+</body>
+</html>
